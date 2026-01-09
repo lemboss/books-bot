@@ -1,0 +1,28 @@
+services:
+  db-books-bot:
+    image: postgres:15-alpine
+    container_name: db
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+
+  # redis-bot:
+  #   image: redis:latest
+  #   container_name: redis-bot
+  #   volumes:
+  #     - ./redis_data:/data
+    
+  books-tgbot:
+    depends_on:
+      - db-books-bot
+    image: books-tgbot
+    build:
+      context: .
+    container_name: tgbot
+    env_file:
+      - .env
+    command: bash -c "alembic upgrade head && python main.py"
+    restart: on-failure:10
