@@ -26,3 +26,5 @@ services:
       - .env
     command: bash -c "alembic upgrade head && python main.py"
     restart: on-failure:10
+    volumes:
+      - ./logs:/app/logs
