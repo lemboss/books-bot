@@ -1,8 +1,5 @@
 from io import BytesIO
 import logging
-from datetime import datetime
-from sysconfig import get_path
-from tkinter import Menu
 from aiogram.types import CallbackQuery, Message, InputMediaPhoto, InlineKeyboardMarkup, InlineKeyboardButton
 
 from aiogram_dialog import DialogManager, StartMode, ShowMode
