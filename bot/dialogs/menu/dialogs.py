@@ -15,7 +15,8 @@ main_menu_dialog = Dialog(
             Const("Продолжить чтение"),
             id="to_continue_reading_btn",
             on_click=open_latest_book,
-            state=MenuSG.reading_book
+            state=MenuSG.reading_book,
+            when="any_pointer"
         ),
         SwitchTo(
             Const("Добавить книгу"),
@@ -25,9 +26,11 @@ main_menu_dialog = Dialog(
         SwitchTo(
             Const("Мои книги"),
             id="to_my_books_btn",
-            state=MenuSG.my_books
+            state=MenuSG.my_books,
+            when="any_books"
         ),
-        state=MenuSG.main
+        state=MenuSG.main,
+        getter=getter_menu
     ),
     Window(
         Const("Загрузите PDF"),

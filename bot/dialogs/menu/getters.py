@@ -1,13 +1,22 @@
 from aiogram.enums import ContentType
 from aiogram_dialog import DialogManager
 from aiogram_dialog.api.entities.media import MediaAttachment
-    
+
 async def getter_my_books(dialog_manager, **__):
     user_id = dialog_manager.event.from_user.id
     db = dialog_manager.middleware_data.get("db")
     books = await db.book_service.get_users_books(user_id)
     return {
         "books": ((b.id, b.title) for b in books)
+    }
+    
+    
+async def getter_menu(dialog_manager, **__):
+    user_id = dialog_manager.event.from_user.id
+    db = dialog_manager.middleware_data.get("db")
+    return {
+        "any_books": any(await db.book_service.get_users_books(user_id)),
+        "any_pointer": any(await db.reading_service.reading_repo.get_all(user_id=user_id))
     }
     
 async def getter_book_content(dialog_manager, **__):

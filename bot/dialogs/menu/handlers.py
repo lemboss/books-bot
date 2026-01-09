@@ -2,6 +2,7 @@ from io import BytesIO
 import logging
 from datetime import datetime
 from sysconfig import get_path
+from tkinter import Menu
 from aiogram.types import CallbackQuery, Message, InputMediaPhoto, InlineKeyboardMarkup, InlineKeyboardButton
 
 from aiogram_dialog import DialogManager, StartMode, ShowMode
@@ -29,7 +30,7 @@ async def handler(message: Message, __: Button, dialog_manager: DialogManager):
     if doc.file_size > 100 * 1024 * 1024:
         return await message.answer("Файл слишком большой (> 100 MB)")
         
-
+    await message.answer("Начал загружать")
     stream = await bot.download(doc)
     data = stream.read()
 
@@ -39,8 +40,11 @@ async def handler(message: Message, __: Button, dialog_manager: DialogManager):
         text = read_pdf(BytesIO(data))
     except Exception:
         return await message.answer("PDF повреждён")
+    await message.answer("Обрабатываю файл")
     await add_book_disk(message.from_user.id, data, text, db)
     await message.answer("PDF принят 👍")
+    
+    await dialog_manager.switch_to(MenuSG.my_books)
     
 async def open_latest_book(callback: CallbackQuery, __: Button, dialog_manager: DialogManager):
     db = dialog_manager.middleware_data.get("db")
