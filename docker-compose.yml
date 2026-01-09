@@ -1,7 +1,7 @@
 services:
   db-books-bot:
     image: postgres:15-alpine
-    container_name: db
+    container_name: db-books-bot
     environment:
       - POSTGRES_DB=${DB_NAME}
       - POSTGRES_USER=${DB_USER}
@@ -21,7 +21,7 @@ services:
     image: books-tgbot
     build:
       context: .
-    container_name: tgbot
+    container_name: books-tgbot
     env_file:
       - .env
     command: bash -c "alembic upgrade head && python main.py"
